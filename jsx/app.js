@@ -61,11 +61,21 @@ var Post = React.createClass({
     var userLink = "http://www.reddit.com/u/" + postData.author
     var subredditLink = "http://www.reddit.com/r/" + postData.subreddit
     var permalink = "http://www.reddit.com" + postData.permalink
+
+    var thumbnailStyle = {
+      backgroundImage: 'url(' + postData.thumbnail + ')',
+      display: postData.thumbnail ? 'block' : 'none'
+    };
+
     return (
       <li>
-      <a href={postData.url}>{postData.title}</a> ({postData.domain})<br />
-      Submitted {Date(postData.created_utc * 1000)} by <a href={userLink}>{postData.author}</a> to <a href={subredditLink}>r/{postData.subreddit}</a><br />
-      <a href={permalink}>{postData.num_comments} comments</a>
+        <div style={thumbnailStyle} className="thumbnail-container">
+        </div>
+        <div className="content">
+          <a href={postData.url}>{postData.title}</a> <span className="subreddit">({postData.domain})</span><br />
+          Submitted {Date(postData.created_utc * 1000)} by <a href={userLink}>{postData.author}</a> to <a href={subredditLink}>r/{postData.subreddit}</a><br />
+          <a href={permalink}>{postData.num_comments} comments</a>
+        </div>
       </li>
     )
   }

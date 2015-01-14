@@ -1,7 +1,61 @@
+html {
+  background-color: #272822;
+  color: #FFFFFF;
+  font-family: helvetica, sans-serif;
+  line-height: 140%;
+}
+
+a:link {
+  color: #EFB571;
+}
+
+a:visited {
+  color: #EFC090
+}
+
+#content {
+  padding: 0px;
+  margin: 20px auto 20px auto;
+  width: 960px;
+}
+
+h1.title {
+  color: #7FB347;
+}
+
 ul.posts {
   list-style-type: none;
+  width: 100%;
+  display: block;
+  float: left;
+  margin: 0px;
+  padding: 0px;
+}
+
+ul.posts li span.subreddit {
+  color: #CCDF32;
 }
 
 ul.posts li {
+  width: 100%;
+  height: auto;
+  display: block;
+  float: left;
   margin: 10px 0px 10px 0px;
+}
+
+ul.posts li div.thumbnail-container {
+  float: left;
+  width: 80px;
+  margin-right: 10px;
+  display: block;
+  height: 80px;
+  background-size: contain;
+}
+
+ul.posts li div.content {
+  float: left;
+  display: block;
+  height: auto;
+  width: 870px;
 }
