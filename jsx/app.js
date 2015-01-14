@@ -72,9 +72,9 @@ var Post = React.createClass({
         <div style={thumbnailStyle} className="thumbnail-container">
         </div>
         <div className="content">
-          <a href={postData.url}>{postData.title}</a> <span className="subreddit">({postData.domain})</span><br />
-          Submitted {Date(postData.created_utc * 1000)} by <a href={userLink}>{postData.author}</a> to <a href={subredditLink}>r/{postData.subreddit}</a><br />
-          <a href={permalink}>{postData.num_comments} comments</a>
+          <a href={postData.url} target="_blank">{postData.title}</a> <span className="subreddit">({postData.domain})</span><br />
+          Submitted {Date(postData.created_utc * 1000)} by <a href={userLink} target="_blank">{postData.author}</a> to <a href={subredditLink} target="_blank">r/{postData.subreddit}</a><br />
+          <a href={permalink} target="_blank">{postData.num_comments} comments</a>
         </div>
       </li>
     )
