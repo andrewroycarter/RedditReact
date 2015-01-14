@@ -40,11 +40,15 @@ var App = React.createClass({
     this.setState({"showLoadMoreButton": false});
 
     oboe('http://www.reddit.com/.json?after=' + this.state.after)
-    .done(function(result) {
+    .node('children.*', function(post) {
 
       var postList = this.refs.postList;
       var posts = postList.state.posts;
-      postList.setState({"posts": posts.concat(result.data.children)});
+      posts.push(post);
+      postList.setState({"posts": posts});
+
+    }.bind(this))
+    .done(function(result) {
 
       this.setState({"after": result.data.after, "showLoadMoreButton": true});
 
@@ -61,6 +65,8 @@ var Post = React.createClass({
     var userLink = "http://www.reddit.com/u/" + postData.author
     var subredditLink = "http://www.reddit.com/r/" + postData.subreddit
     var permalink = "http://www.reddit.com" + postData.permalink
+    var createdDate = new Date(0);
+    createdDate.setUTCMilliseconds(postData.created_utc * 1000);
 
     var thumbnailStyle = {
       backgroundImage: 'url(' + postData.thumbnail + ')',
@@ -73,7 +79,7 @@ var Post = React.createClass({
         </div>
         <div className="content">
           <a href={postData.url} target="_blank">{postData.title}</a> <span className="subreddit">({postData.domain})</span><br />
-          Submitted {Date(postData.created_utc * 1000)} by <a href={userLink} target="_blank">{postData.author}</a> to <a href={subredditLink} target="_blank">r/{postData.subreddit}</a><br />
+          Submitted {createdDate.toString()} lol by <a href={userLink} target="_blank">{postData.author}</a> to <a href={subredditLink} target="_blank">r/{postData.subreddit}</a><br />
           <a href={permalink} target="_blank">{postData.num_comments} comments</a>
         </div>
       </li>
