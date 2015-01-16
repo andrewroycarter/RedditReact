@@ -7,9 +7,9 @@ var PostList = React.createClass({
     });
 
     return (
-      <ul className="posts" id="posts">
+      <div className="row" id="posts">
         {postNodes}
-      </ul>
+      </div>
     );
   },
   getInitialState: function() {
@@ -20,24 +20,26 @@ var PostList = React.createClass({
 var App = React.createClass({
   render: function() {
 
-    var buttonStyle = {
-      display: this.state.showLoadMoreButton ? "inline" : "none"
-    }
+    var props = {}
+    if (this.state.disableMoreButton) {
+      props.disabled = 'disabled'
+    };
 
     return (
-      <div>
+      <div className="row">
       <PostList ref="postList"/>
-      <button style={buttonStyle} ref="loadMoreButton" onClick={this.getPosts}>Load More</button>
+      <br />
+      <button {...props} className="btn btn-default" type="submit" ref="loadMoreButton" onClick={this.getPosts}>Load More</button>
       </div>
     )
   },
   getInitialState: function() {
     return {
-      showLoadMoreButton: false
+      disableMoreButton: true
     };
   },
   getPosts: function() {
-    this.setState({"showLoadMoreButton": false});
+    this.setState({"disableMoreButton": true});
 
     oboe('http://www.reddit.com/.json?after=' + this.state.after)
     .node('children.*', function(post) {
@@ -50,7 +52,7 @@ var App = React.createClass({
     }.bind(this))
     .done(function(result) {
 
-      this.setState({"after": result.data.after, "showLoadMoreButton": true});
+      this.setState({"after": result.data.after, "disableMoreButton": false});
 
     }.bind(this));
   },
@@ -69,20 +71,22 @@ var Post = React.createClass({
     createdDate.setUTCMilliseconds(postData.created_utc * 1000);
 
     var thumbnailStyle = {
-      backgroundImage: 'url(' + postData.thumbnail + ')',
-      display: postData.thumbnail ? 'block' : 'none'
+      display: postData.thumbnail ? 'table-cell' : 'none'
     };
 
     return (
-      <li>
-        <div style={thumbnailStyle} className="thumbnail-container">
+      <div className="media">
+        <div style={thumbnailStyle} className="media-left media-top">
+          <img className="img-thumbnail img-responsive" src={postData.thumbnail} />
         </div>
-        <div className="content">
-          <a href={postData.url} target="_blank">{postData.title}</a> <span className="subreddit">({postData.domain})</span><br />
-          Submitted {createdDate.toString()} lol by <a href={userLink} target="_blank">{postData.author}</a> to <a href={subredditLink} target="_blank">r/{postData.subreddit}</a><br />
+        <div className="media-body">
+          <h4 className="media-heading"><a href={postData.url}>{postData.title}</a> <small>({postData.domain})</small></h4>
+          <p>
+          Submitted {createdDate.toString()} by <a href={userLink} target="_blank">{postData.author}</a> to <a href={subredditLink} target="_blank">r/{postData.subreddit}</a><br />
           <a href={permalink} target="_blank">{postData.num_comments} comments</a>
+          </p>
         </div>
-      </li>
+      </div>
     )
   }
 });
